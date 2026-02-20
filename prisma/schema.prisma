@@ -1,0 +1,30 @@
+// prisma/schema.prisma
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+}
+
+model Course {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String    @db.Text
+  price       Decimal
+  duration    String
+  icon        String
+  bookings    Booking[]
+}
+
+model Booking {
+  id           Int      @id @default(autoincrement())
+  studentName  String
+  studentEmail String
+  date         DateTime
+  courseId     Int
+  course       Course   @relation(fields: [courseId], references: [id])
+  createdAt    DateTime @default(now())
+}
